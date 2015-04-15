@@ -1,8 +1,8 @@
 # utest
 
-[![Build Status](https://secure.travis-ci.org/felixge/node-utest.png)](http://travis-ci.org/felixge/node-utest)
-
 The minimal unit testing library.
+
+# Fork: Allow Async Tests
 
 ## Why yet another test library?
 
@@ -32,16 +32,19 @@ var test   = require('utest');
 var assert = require('assert');
 
 test('Number#toFixed', {
-  'returns a string': function() {
+  'returns a string': function(next) {
     assert.equal(typeof (5).toFixed(), 'string');
+    next();
   },
 
-  'takes number of decimal places': function() {
+  'takes number of decimal places': function(next) {
     assert.equal((5).toFixed(1), '5.0');
+    next();
   },
 
-  'does not round': function() {
+  'does not round': function(next) {
     assert.equal((5.55).toFixed(1), '5.5');
+    next();
   },
 });
 ```
@@ -53,21 +56,25 @@ var test   = require('utest');
 var assert = require('assert');
 
 test('Date', {
-  before: function() {
+  before: function(next) {
     this.date = new Date;
+    next();
   },
 
-  after: function() {
+  after: function(next) {
     this.date = null;
+    next();
   },
 
-  'lets you manipulate the year': function() {
+  'lets you manipulate the year': function(next) {
     this.date.setYear(2012);
     assert.equal(this.date.getFullYear(), 2012);
+    next();
   },
 
-  'can be coerced into a number': function() {
+  'can be coerced into a number': function(next) {
     assert.equal(typeof +this.date, 'number');
+    next();
   },
 });
 ```
@@ -81,11 +88,11 @@ var test   = require('utest');
 var assert = require('assert');
 
 test('MyTest', {
-  '!will be executed': function() {
+  '!will be executed': function(next) {
     // ...
   },
 
-  'will not be exectuted': function() {
+  'will not be exectuted': function(next) {
     // ...
   },
 });
